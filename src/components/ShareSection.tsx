@@ -35,7 +35,7 @@ const ShareSection = () => {
               <Button
                 variant="outline"
                 className="flex items-center gap-2"
-                onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(campaignUrl)}`, '_blank')}
+                onClick={() => window.open(`https://www.facebook.com/jsnetzim`, '_blank')}
               >
                 <Facebook className="h-4 w-4" />
                 Facebook
@@ -53,7 +53,7 @@ const ShareSection = () => {
               <Button
                 variant="outline"
                 className="flex items-center gap-2"
-                onClick={() => window.open(`mailto:?subject=Support Zimbabwean Journalism&body=${encodeURIComponent(shareText + ' ' + campaignUrl)}`, '_blank')}
+                onClick={() => window.open(`mailto:jsnetzim@gmail.com?subject=FROM%20WEBSITE%20-%20(Your%20Subject%20Here)`, '_blank')}
               >
                 <Mail className="h-4 w-4" />
                 Email

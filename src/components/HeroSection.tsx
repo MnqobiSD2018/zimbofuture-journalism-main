@@ -1,23 +1,22 @@
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/journalism-hero.jpg";
 import JSNZLogo from "@/assets/JSNZ.svg";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[80vh] bg-gradient-hero flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[95vh] bg-gradient-hero flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-black/40 z-10"></div>
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroImage})` }}
+        style={{ backgroundImage: `url('https://scontent.fhre2-2.fna.fbcdn.net/v/t39.30808-6/527454456_1545929689878265_2320324283767260995_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=aji-GXqUu7QQ7kNvwG_ZtCN&_nc_oc=Adl4PGZteyAoPYJ2GyxkXCaPBc3nrELYEyU6WYPJ8ydZtzuAOjr3r4-4iFM4jcd1eB4&_nc_zt=23&_nc_ht=scontent.fhre2-2.fna&_nc_gid=InHpKkwPpxJ0lI0knNVkWw&oh=00_AfXNJGTAI98yMeZaTBLE8GoTwJr23PE049FvLwDQyLuceQ&oe=689F53C4')` }}
       ></div>
       
-      <div className="relative z-20 container mx-auto px-4 text-center text-white">
+      <div className="relative z-20 container mx-auto px-4 text-center text-white py-20">
         {/* Logo */}
-        <div className="mb-8 flex justify-center">
+        <div className="mb-12 flex justify-center">
           <img 
             src={JSNZLogo} 
             alt="JSNZ Logo" 
-            className="h-20 w-auto"
+            className="h-24 w-auto"
           />
         </div>
         
