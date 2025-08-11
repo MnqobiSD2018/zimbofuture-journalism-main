@@ -2,6 +2,13 @@ import { Button } from "@/components/ui/button";
 import JSNZLogo from "@/assets/JSNZ.svg";
 
 const Header = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 sticky top-0 z-50">
       <div className="container mx-auto px-4">
@@ -23,10 +30,18 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="hidden sm:inline-flex"
+              onClick={() => scrollToSection('footer')}
+            >
               Contact Us
             </Button>
-            <Button size="sm">
+            <Button 
+              size="sm"
+              onClick={() => scrollToSection('donation-tiers')}
+            >
               Donate Now
             </Button>
           </div>

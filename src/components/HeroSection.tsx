@@ -2,8 +2,15 @@ import { Button } from "@/components/ui/button";
 import JSNZLogo from "@/assets/JSNZ.svg";
 
 const HeroSection = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="relative min-h-[95vh] bg-gradient-hero flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-[95vh] bg-gradient-hero flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-black/40 z-10"></div>
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -31,10 +38,20 @@ const HeroSection = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button size="lg" variant="donate" className="text-lg px-8 py-4">
+          <Button 
+            size="lg" 
+            variant="donate" 
+            className="text-lg px-8 py-4"
+            onClick={() => scrollToSection('donation-tiers')}
+          >
             Donate Now
           </Button>
-          <Button size="lg" variant="hero" className="text-lg px-8 py-4">
+          <Button 
+            size="lg" 
+            variant="hero" 
+            className="text-lg px-8 py-4"
+            onClick={() => scrollToSection('campaign-story')}
+          >
             Learn More
           </Button>
         </div>
