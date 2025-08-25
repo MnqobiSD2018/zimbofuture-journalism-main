@@ -27,7 +27,8 @@ const DonationTiers = () => {
     if (amount && amount > 0) {
       // Here you would typically integrate with a payment processor
       console.log(`Processing donation of $${amount}`);
-      alert(`Thank you for your donation of $${amount}! This would integrate with a payment processor.`);
+      alert(`Thank you for your donation of $${amount}!`);
+      // to intergrate with paynow
     } else {
       alert("Please select an amount or enter a valid custom amount.");
     }
