@@ -2,10 +2,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
 const ProgressCard = () => {
-  const raised = 15420;
+  const raised = 0;
   const goal = 50000;
   const percentage = Math.round((raised / goal) * 100);
-  const supporters = 187;
+  const supporters = 256;
 
   return (
     <Card className="bg-gradient-card shadow-medium border-0">

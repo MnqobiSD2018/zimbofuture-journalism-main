@@ -44,7 +44,7 @@ const ShareSection = () => {
               <Button
                 variant="outline"
                 className="flex items-center gap-2"
-                onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(campaignUrl)}`, '_blank')}
+                onClick={() => window.open(`https://x.com/jsnetzim`)}
               >
                 <Twitter className="h-4 w-4" />
                 Twitter
@@ -53,7 +53,7 @@ const ShareSection = () => {
               <Button
                 variant="outline"
                 className="flex items-center gap-2"
-                onClick={() => window.open(`mailto:jsnetzim@gmail.com?subject=FROM%20WEBSITE%20-%20(Your%20Subject%20Here)`, '_blank')}
+                onClick={() => window.open(`mailto:jsnetzim@gmail.com?subject=FROM%20WEBSITE%20-%20(Your%20Subject%20Here)`)}
               >
                 <Mail className="h-4 w-4" />
                 Email
