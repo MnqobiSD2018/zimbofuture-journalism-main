@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import JSNZLogo from "@/assets/JSNZ.svg";
 import React, { useEffect, useState } from "react";
-import { img1, img2, img3, img4 } from "@/assets/heroImage";
+import { img1, img2, img3, img4, img5, img6 } from "@/assets/heroImage";
 
 const HeroSection = () => {
   const scrollToSection = (sectionId: string) => {
@@ -11,7 +11,7 @@ const HeroSection = () => {
     }
   };
 
-  const images = [img1, img2, img3, img4];
+  const images = [img1, img2, img3, img4, img5, img6];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Slideshow: change background every 5s
