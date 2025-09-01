@@ -1,12 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Paynow } from "paynow";
+import Modal from "@/components/ui/modal";
+
 
 const DonationTiers = () => {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState<string>("");
   const [isCustomAmount, setIsCustomAmount] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [users, setUsers] = useState<any[]>([]);
+  let paynow = new Paynow(process.env.PAYNOW_INTEGRATION_ID, process.env.PAYNOW_INTEGRATION_KEY);
 
   const presetAmounts = [25, 50, 100, 250, 500, 1000];
 
@@ -24,14 +30,46 @@ const DonationTiers = () => {
 
   const handleDonate = () => {
     const amount = isCustomAmount ? parseFloat(customAmount) : selectedAmount;
-    if (amount && amount > 0) {
-      // Here you would typically integrate with a payment processor
-      console.log(`Processing donation of $${amount}`);
-      alert(`Thank you for your donation of $${amount}!`);
-      // to intergrate with paynow
-    } else {
-      alert("Please select an amount or enter a valid custom amount.");
-    }
+    let payment = paynow.createPayment("Invoice ${value}");
+    payment.add("Donation", amount);
+    paynow.send(payment).then(Response => {
+      if (Response.success){
+          return (
+            <div>
+              <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                <h2>Payment Successful!</h2>
+                <p>Your transaction was completed successfully.</p>
+                <button onClick={() => setShowModal(false)}>Close</button>
+              </Modal>
+            </div>
+          );
+
+          let link = Response.redirectUrl;  
+      } else {
+          return (
+            <div>
+              <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                <h2>Payment Failed!</h2>
+                <p>Your transaction Failed!</p>
+                <button onClick={() => setShowModal(false)}>Close</button>
+              </Modal>
+            </div>
+          );
+      }
+
+
+
+    })
+
+    // const amount = isCustomAmount ? parseFloat(customAmount) : selectedAmount;
+    // if (amount && amount > 0) {
+    //   // Here you would typically integrate with a payment processor
+    //   console.log(`Processing donation of $${amount}`);
+    //   alert(`Thank you for your donation of $${amount}!`);
+    //   // to intergrate with paynow
+    // } else {
+    //   alert("Please select an amount or enter a valid custom amount.");
+    // }
   };
 
   const getCurrentAmount = () => {
