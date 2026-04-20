@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { Paynow } from "paynow";
 import Modal from "@/components/ui/modal";
+import { supabase } from "@/lib/supabaseClient";
 
 
 const DonationTiers = () => {
@@ -11,6 +12,7 @@ const DonationTiers = () => {
   const [customAmount, setCustomAmount] = useState<string>("");
   const [isCustomAmount, setIsCustomAmount] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [users, setUsers] = useState<any[]>([]);
   let paynow = new Paynow(process.env.PAYNOW_INTEGRATION_ID, process.env.PAYNOW_INTEGRATION_KEY);
 
@@ -28,49 +30,52 @@ const DonationTiers = () => {
     setSelectedAmount(null);
   };
 
-  const handleDonate = () => {
-    const amount = isCustomAmount ? parseFloat(customAmount) : selectedAmount;
-    let payment = paynow.createPayment("Invoice ${value}");
+async function handleDonate() {
+  const amount = isCustomAmount ? parseFloat(customAmount) : selectedAmount;
+  if (!(amount && amount > 0)) return;
+
+  try {
+    // Create and send payment first
+    let payment = paynow.createPayment(`Invoice ${amount}`);
     payment.add("Donation", amount);
-    paynow.send(payment).then(Response => {
-      if (Response.success){
-          return (
-            <div>
-              <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-                <h2>Payment Successful!</h2>
-                <p>Your transaction was completed successfully.</p>
-                <button onClick={() => setShowModal(false)}>Close</button>
-              </Modal>
-            </div>
-          );
 
-          let link = Response.redirectUrl;  
-      } else {
-          return (
-            <div>
-              <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-                <h2>Payment Failed!</h2>
-                <p>Your transaction Failed!</p>
-                <button onClick={() => setShowModal(false)}>Close</button>
-              </Modal>
-            </div>
-          );
-      }
+    const response = await paynow.send(payment);
 
+    // Log the transaction with success or failure based on payment response
+    const isSuccessful = response.success === true; // assuming response.success indicates status
 
+    const { data, error } = await supabase.from("transaction").insert([
+      {
+        amount: amount,
+        is_successful: isSuccessful,
+      },
+    ]);
 
-    })
+    if (error) {
+      console.error("Error logging transaction:", error.message);
+    } else {
+      console.log("Transaction logged:", data);
+    }
 
-    // const amount = isCustomAmount ? parseFloat(customAmount) : selectedAmount;
-    // if (amount && amount > 0) {
-    //   // Here you would typically integrate with a payment processor
-    //   console.log(`Processing donation of $${amount}`);
-    //   alert(`Thank you for your donation of $${amount}!`);
-    //   // to intergrate with paynow
-    // } else {
-    //   alert("Please select an amount or enter a valid custom amount.");
-    // }
-  };
+    // Update modal state to show success or failure message
+    setModalMessage(isSuccessful ? "Payment Successful!" : "Payment Failed.");
+    setShowModal(true);
+  } catch (err) {
+    console.error("Payment or logging error:", err);
+
+    // Log failed transaction despite error in payment or logging
+    await supabase.from("transaction").insert([
+      {
+        amount: amount,
+        is_successful: false,
+      },
+    ]);
+    
+    setModalMessage("Payment Failed due to an error.");
+    setShowModal(true);
+  }
+}
+
 
   const getCurrentAmount = () => {
     if (isCustomAmount && customAmount) {
@@ -169,6 +174,12 @@ const DonationTiers = () => {
               onClick={handleDonate}
             >
               {isAmountValid() ? `Donate $${getCurrentAmount()?.toFixed(2)}` : "Select an Amount"}
+              {showModal && (
+                 <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                <h2>{modalMessage}</h2>
+                <button onClick={() => setShowModal(false)}>Close</button>
+              </Modal>
+)}
             </Button>
           </div>
 
