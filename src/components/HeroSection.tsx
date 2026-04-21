@@ -25,7 +25,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-[95vh] flex items-center justify-center overflow-hidden"
+      className="relative min-h-[95vh] flex items-center justify-center overflow-hidden bg-gradient-hero"
     >
       {/* Background slideshow */}
       <div className="absolute inset-0">

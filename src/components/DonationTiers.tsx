@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
-import { Paynow } from "paynow";
 import Modal from "@/components/ui/modal";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -14,7 +13,6 @@ const DonationTiers = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [users, setUsers] = useState<any[]>([]);
-  let paynow = new Paynow(process.env.PAYNOW_INTEGRATION_ID, process.env.PAYNOW_INTEGRATION_KEY);
 
   const presetAmounts = [25, 50, 100, 250, 500, 1000];
 
@@ -34,7 +32,19 @@ async function handleDonate() {
   const amount = isCustomAmount ? parseFloat(customAmount) : selectedAmount;
   if (!(amount && amount > 0)) return;
 
+  const paynowIntegrationId = import.meta.env.VITE_PAYNOW_INTEGRATION_ID;
+  const paynowIntegrationKey = import.meta.env.VITE_PAYNOW_INTEGRATION_KEY;
+
+  if (!paynowIntegrationId || !paynowIntegrationKey) {
+    setModalMessage("Donation setup is not configured yet.");
+    setShowModal(true);
+    return;
+  }
+
   try {
+    const { Paynow } = await import("paynow");
+    const paynow = new Paynow(paynowIntegrationId, paynowIntegrationKey);
+
     // Create and send payment first
     let payment = paynow.createPayment(`Invoice ${amount}`);
     payment.add("Donation", amount);
